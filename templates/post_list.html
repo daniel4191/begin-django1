@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>post_list</title>
+</head>
+<body>
+    <h1>Post lists</h1>
+    {% for post in posts %}
+        <ul>
+            <li>{{post.title}}</li>
+            <li>{{post.content}}</li>
+            {% for comment in post.comment_set.all %}
+                {{comment.id}}
+                {{comment.comment}}
+                {{comment.post}}
+            {%empty%}
+                <li>아직 댓글이 없습니다.</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</body>
+</html>
