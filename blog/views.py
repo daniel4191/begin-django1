@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from .models import Post
+from .models import Post, Comment
 
 # Create your views here.
 def post_list(request):
@@ -12,7 +12,13 @@ def post_list(request):
 
 def post_detail(request, post_id):
     post = Post.objects.get(id=post_id)
-    print(post)
+    
+    if request.method == "POST":
+        comment_content = request.POST['comment']
+        Comment.objects.create(
+            post = post,
+            content = comment_content
+        )
     context = {
         "post":post
     }
@@ -22,9 +28,11 @@ def post_add(request):
     if request.method == "POST":
         title = request.POST['title']
         content = request.POST['content']
+        thumbnail = request.FILES['thumbnail']
         post = Post.objects.create(
             title = title,
-            content = content
+            content = content,
+            thumbnail=thumbnail
         )
         return redirect(f"/posts/{post.id}")
         
